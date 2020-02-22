@@ -18,7 +18,7 @@ const titleClickHandler = function(event){
 
   /* [IN PROGRESS] remove class 'active' from all articles
   usuń klasę active ze wszystkich artykułów */
-  const activeArticles = document.querySelectorAll('.post p.active');
+  const activeArticles = document.querySelectorAll('.post.active');
   for(let activeArticle of activeArticles){
   activeArticle.classList.remove('active');
   }
@@ -28,18 +28,20 @@ const titleClickHandler = function(event){
   const articleSelector = clickedElement.getAttribute("href");
   console.log('clickedElement')
 
+
   /* find the correct article using the selector (value of 'href' attribute)
   znajdź na stronie element pasujący do selektora takiego,
   jak wartość atrybutu href, np. #article-2
   – czyli szukamy elementu o id="article-2",*/
-  const questArticle = document.querySelector(articleSelector);
+  const targetArticle = document.querySelector(articleSelector)
+  console.log('targetArticle')
 
 
 
   /* add class 'active' to the correct article
   dodaj klasę active do znalezionego artykułu*/
 
-  questArticle.classList.add('active');
+  targetArticle.classList.add('active');
 
 
 }
