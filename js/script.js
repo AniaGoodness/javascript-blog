@@ -47,6 +47,7 @@
   const optTitleSelector = '.post-title';
   const optTitleListSelector = '.titles';
   const optArticleTagsSelector = '.post-tags .list';
+  const optArticleAuthorSelector = 'author-name';
 
   // eslint-disable-next-line require-jsdoc
   function generateTitleLinks(customSelector = '') {
@@ -136,27 +137,46 @@
       /* END LOOP: for each active tag link */
       }
       /* find all tag links with "href" attribute equal to the "href" constant */
-      const  
-    /* START LOOP: for each found tag link */
-      for (let   of  ) {
+      const allTags = document.querySelectorAll('a[href^="' + href + '"]');
+      /* START LOOP: for each found tag link */
+      for (let allTag of allTags) {
       /* add class active */
+        allTag.classList.add('active'); 
+        /* END LOOP: for each found tag link */
+      }
+      /* execute function "generateTitleLinks" with article selector as argument */
+      generateTitleLinks('[data-tags~="' + tag + '"]');
+    }
   
-    /* END LOOP: for each found tag link */
-     }
-    /* execute function "generateTitleLinks" with article selector as argument */
-    generateTitleLinks('[data-tags~="' + tag + '"]');
-  }
-  
-  function addClickListenersToTags(){
-    /* find all links to tags */
-  
+    function addClickListenersToTags() {
+ /* find all links to tags */
+     const allTagLinks = document.querySelectorAll('a[href^="' + href + '"]');
     /* START LOOP: for each link */
-  
+    for (let allTagLink of allTagLinks) {
       /* add tagClickHandler as event listener for that link */
-  
+      allTagLinks.addEventListener('click', function () {
+        const links = document.querySelectorAll('.post-tags .list');
+        console.log('links:', links);
+      });
+    }
     /* END LOOP: for each link */
+    }
   }
-  
   addClickListenersToTags();
- }
+ 
+
+  function generateAuthors() {
+  /* find all articles */
+  const articles = document.querySelectorAll(optArticleSelector + customSelector);;
+  console.log(customSelector);
+  for (let article of articles) {
+      const titleList = article.querySelector(optArticleTagsSelector);
+      console.log('titleList');
+  addClickListenersToAuthors()
+
+  authorClickHandler()
+
+  }
+ generateAuthors()
+  } 
 }
