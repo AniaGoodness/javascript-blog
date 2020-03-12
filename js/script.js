@@ -3,7 +3,8 @@ const optArticleSelector = '.post';
 const optTitleSelector = '.post-title';
 const optTitleListSelector = '.titles';
 const optArticleTagsSelector = '.post-tags .list';
-const optArticleAuthorSelector = '.post-athor';
+const optArticleAuthorSelector = '.post-author';
+const optTagsListSelector = '.tags .list';
 {
   const titleClickHandler = function(event) {
     event.preventDefault();
@@ -18,28 +19,31 @@ const optArticleAuthorSelector = '.post-athor';
     /* [DONE] add class 'active' to the clicked link
   dodaj klasę active do klikniętego linka */
     console.log('clickedElement:', clickedElement);
-    clickedElement.classList.add('active');
-
+    clickedElement.classList.add('active');  
     /* [DONE] remove class 'active' from all articles
   usuń klasę active ze wszystkich artykułów */
-    const activeArticles = document.querySelectorAll('.post .active');
+    const activeArticles = document.querySelectorAll('.post.active');
     for (let activeArticle of activeArticles) {
-      activeArticle.classList.remove('active');
-    }
-    /* [DONE] get 'href' attribute from the clicked link
+      activeArticle.classList.remove('active'); 
+      /* [DONE] get 'href' attribute from the clicked link
   z klikniętego linka weź zawartość atrybutu href, np. #article-2,*/
-    const href = clickedElement.getAttribute('href');
-    console.log('href');
-    /* [DONE] find the correct article using the selector (value of 'href' attribute)
-  znajdź na stronie element pasujący do selektora takiego,
-  jak wartość atrybutu href, np. #article-2
-  – czyli szukamy elementu o id="article-2",*/
-    const findArticle = document.querySelector('href');
-    console.log('findArticle');
-    /* [DONE] add class 'active' to the correct article
-    dodaj klasę active do znalezionego artykułu*/
-    findArticle.classList.add('active');
-  };
+      const href = clickedElement.getAttribute('href');
+      console.log(href);
+      /* [DONE] find the correct article using the selector (value of 'href' attribute)
+      znajdź na stronie element pasujący do selektora takiego,
+      jak wartość atrybutu href, np. #article-2
+      –  czyli szukamy elementu o id="article-2",*/
+      const findArticle = document.querySelector(href);
+      console.log(findArticle);
+      /* [DONE] add class 'active' to the correct article
+      dodaj klasę active do znalezionego artykułu*/
+      findArticle.classList.add('active');
+    }
+    const links = document.querySelectorAll('.titles a');
+    for(let link of links) {
+      link.addEventListener('click', titleClickHandler);
+    }
+  }
   /* ostatnie zadanie z 6. modułu */
   function generateTitleLinks(customSelector = '') {
     /* remove contents of titleList */
@@ -51,14 +55,14 @@ const optArticleAuthorSelector = '.post-athor';
     for (let article of articles) {
     /* get the article id */
       const articleId = article.getAttribute('id');
-      console.log('articleId');
+      console.log(articleId);
       /* find the title element */
       const articleTitle = article.querySelector(optTitleSelector).innerHTML;
       console.log(articleTitle);
       /* get the title from the title element */
       /* create HTML of the link */
       const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
-      console.log('linkHTML');
+      console.log(linkHTML);
       /* insert link into titleList */
       // titleList.innerHTML = titleList.innerHTML + linkHTML;
       html = html + linkHTML;
@@ -67,7 +71,7 @@ const optArticleAuthorSelector = '.post-athor';
   }
   generateTitleLinks();
   const links = document.querySelectorAll('.titles a');
-  console.log('links');
+  console.log(links);
   for (let link of links) {
     link.addEventListener('click', titleClickHandler);
   }
@@ -78,8 +82,7 @@ const optArticleAuthorSelector = '.post-athor';
     /* START LOOP: for every article: */
     for (let article of articles) {
     /* find tags wrapper */
-      const titleList = article.querySelector(optArticleTagsSelector);
-      console.log('titleList');
+    const tagWrapper = article.querySelector(optArticleTagsSelector);
       /* make html variable with empty string */
       let html = '';
       /* get tags from data-tags attribute */
@@ -96,7 +99,7 @@ const optArticleAuthorSelector = '.post-athor';
       /* END LOOP: for each tag */
       }
       /* insert HTML of all the links into the tags wrapper */
-      tagsWrapper.innerHTML = html;
+      tagWrapper.innerHTML = html;
       /* END LOOP: for every article: */
     }
   }
@@ -149,6 +152,7 @@ const optArticleAuthorSelector = '.post-athor';
   for (let article of articles) {
     //przypisujemy do zmiennej authorWrapper wszystkie elementy o klasie ze zmiennej optArticleAuthorSelector znajdujące się w article
     const authorWrapper = article.querySelector(optArticleAuthorSelector);
+    console.log('authorWrapper: ' + authorWrapper);
     //przypisujemy do zmiennej articleAuthor atrybut 'data-author' z danego article
     const articleAuthor = article.getAttribute('data-author');
     //console.logujemy articleAuthor żeby zobaczyć czy mamy wyjętego dobrze autora
@@ -162,7 +166,8 @@ const optArticleAuthorSelector = '.post-athor';
     //console.logujemy sobie nasz html
     console.log(html)
     //wrzucamy do naszego authorWrapper nasz html za pomocą .innerHTML = 
-    tagsWrapper.innerHTML = html;
+    //UWAGA - kopiujesz kod z funkcji wyżej i nie zmieniasz nazw zmiennych, poniżej była zła nazwa
+    authorWrapper.innerHTML = html;
     }
   }
 generateAuthors();
