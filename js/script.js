@@ -5,6 +5,7 @@ const optTitleListSelector = '.titles';
 const optArticleTagsSelector = '.post-tags .list';
 const optArticleAuthorSelector = '.post-author';
 const optTagsListSelector = '.tags.list';
+const optAuthorsListSelector = '.authors.list';
 const optCloudClassCount = 5;
 const optCloudClassPrefix = 'tag-size-';
 {
@@ -77,7 +78,7 @@ const optCloudClassPrefix = 'tag-size-';
   for (let link of links) {
     link.addEventListener('click', titleClickHandler);
   }
-  /* [NEW] */
+  /* [NEW] tag */
   function calculateTagsParams(tags) {
     const params = {min: 99999, max: 0};
       for(let tag in tags){
@@ -95,7 +96,7 @@ const optCloudClassPrefix = 'tag-size-';
       console.log(tag + 'is used' + tags[tag] + 'times');
     }
   }
-  function calculateTagClass(count, oarams) {
+  function calculateTagClass(count, params) {
     const normalizedCount = count - params.min;
     const normalizedMax = params.max - params.min;
     const percentage = normalizedCount / normalizedMax;
@@ -149,7 +150,7 @@ const optCloudClassPrefix = 'tag-size-';
     for (let tag in allTags) {
       /* [NEW] generate code of a link and add it to allTagsHTML */
       //allTagsHTML += tag + '(' + allTags[tag] + ')';
-      const tagLinkHTML = '<li>' + calculateTagClass(allTags[tag], tagsParam) + '</li>';
+      const tagLinkHTML = '<li class="tag-size-' + calculateTagClass(allTags[tag], tagsParams) + '">' + tag + '</li>';
       console.log('tagLinkHTML:', tagLinkHTML);
       allTagsHTML += tagLinkHTML;
       /* [NEW] END LOOP: for each tag of allTags: */
@@ -200,7 +201,35 @@ const optCloudClassPrefix = 'tag-size-';
     }
   addClickListenersToTags();
   }
+  /* [NEW] author */
+  function calculateAuthorsParams(authors) {
+    const params = {min: 99999, max: 0};
+      for(let author in authors){
+      if (authors[author] > params.max) {
+        params.max = authors[author];
+      }
+      if (authors[author] < params.min) {
+        params.min = authors[author];
+      }
+    }
+    return params;
+    console.log(author + 'is used' + authors[author] + 'times');
+    console.log(params);
+    for (let author in authors) {
+      console.log(author + 'is used' + authors[author] + 'times');
+    }
+  }
+  function calculateAuthorClass(count, params) {
+    const normalizedCount = count - params.min;
+    const normalizedMax = params.max - params.min;
+    const percentage = normalizedCount / normalizedMax;
+    const classNumber = Math.floor( ( (count - params.min) / (params.max - params.min) ) * optCloudClassCount + 1 );
+    console.log(classNumber);
+    return optCloudClassPrefix, classNumber;
+  }
   function generateAuthors() {
+    /* [NEW] */
+    let allAuthors = {};
   //przypisujemy wszystkie elementy pasujące do zmiennej optArticleSelector do zmiennej articles
   const articles = document.querySelectorAll(optArticleSelector);
   //robimy pętle i przechodzimy po każdym pojedynczym article
@@ -208,23 +237,40 @@ const optCloudClassPrefix = 'tag-size-';
     //przypisujemy do zmiennej authorWrapper wszystkie elementy o klasie ze zmiennej optArticleAuthorSelector znajdujące się w article
     const authorWrapper = article.querySelector(optArticleAuthorSelector);
     console.log('authorWrapper: ' + authorWrapper);
+    //tworzymy nową zmienną html która jest teraz pusta ''
     //przypisujemy do zmiennej articleAuthor atrybut 'data-author' z danego article
     const articleAuthor = article.getAttribute('data-author');
-    //console.logujemy articleAuthor żeby zobaczyć czy mamy wyjętego dobrze autora
     console.log(articleAuthor);
-    //tworzymy nową zmienną html która jest teraz pusta ''
     let html = '';
-    //tworzymy zmienną linkHTML do której zapisujemy nasz html <p class="post-author">by '+ articleAuthor +'</p>
-    const linkHTML = '<p class="post-author">by '+ articleAuthor +'</p>';
-    //dodajemy do zmiennej html nasz linkHTML +=
-    html = html + linkHTML;
-    //console.logujemy sobie nasz html
-    console.log(html)
+    //console.logujemy articleAuthor żeby zobaczyć czy mamy wyjętego dobrze autora
+    //const articleAuthorArray = articleAuthor.split('');
+    //for (let articleAuthor of articleAuthorArray) {
+      //tworzymy zmienną linkHTML do której zapisujemy nasz html <p class="post-author">by '+ articleAuthor +'</p>
+      const linkHTML = '<p class="post-author"><a href="#author-' + articleAuthor +'">by '+ articleAuthor +'</a></p>';
+      //dodajemy do zmiennej html nasz linkHTML +=
+      html = linkHTML + html;
+      //console.logujemy sobie nasz html
+      console.log(html)
+      if (!allAuthors.hasOwnProperty(articleAuthor)) {
+       allAuthors[articleAuthor] = 1;
+      } 
+      else {
+        allAuthors[articleAuthor]++;
+      }
+      authorWrapper.innerHTML = html;
     //wrzucamy do naszego authorWrapper nasz html za pomocą .innerHTML = 
     //UWAGA - kopiujesz kod z funkcji wyżej i nie zmieniasz nazw zmiennych, poniżej była zła nazwa
-    authorWrapper.innerHTML = html;
     }
-  }
+    const authorList = document.querySelector('.authors');
+    const authorsParams = calculateAuthorsParams(allAuthors);
+    console.log('authorsParams:', authorsParams);
+    let allAuthorsHTML = '';
+    for (let author in allAuthors) {
+      allAuthorsHTML += '<li><a href="#author-' + author + '">' + author + '(' + allAuthors[author] + ')</li>'; 
+    }
+    authorList.innerHTML = allAuthorsHTML;
+    console.log(allAuthors);
+}
 generateAuthors();
 function authorClickHandler(event) {
   event.preventDefault();
@@ -244,11 +290,11 @@ function authorClickHandler(event) {
   //tworzymy nową zmienną allAuthors i zapisujemy do niej wszystkie linki pasujące do schematu 'a[href^="' + href + '"]'
   const allAuthors = document.querySelectorAll('a[href^="' + href + '"]');
   //robimy pętle i każdemu z autorow nadajemy klasę active 
-  for (allAutor of allAuthors) {
-    allAutor.classList.add('active');
+  for (allAuthor of allAuthors) {
+    allAuthor.classList.add('active');
     }
   //generujemy listę tytułów dla '[data-author="' + author + '"]'
-  generateTitleLinks('[data-authors~="' + author + '"]');
+  generateTitleLinks('[data-author~="' + author + '"]');
   function addClickListenersToAuthors(){
   //przypisujemy wszystkie elementy pasujące do zmiennej optArticleAuthorSelector do zmiennej links
   const links = document.querySelectorAll('optArticleAuthorsSelector');
@@ -259,5 +305,5 @@ function authorClickHandler(event) {
    }
   }
 addClickListenersToAuthors();
-  }
+}
 }

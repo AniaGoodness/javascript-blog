@@ -111,4 +111,49 @@ body {
 .post-tags ul li a {
   padding-right: 4px;
 }
+
+/* tagsCloud */
+.post-tags {
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.post-tags p {
+  margin: 0 10px 0 0;
+}
+
+.post-tags a {
+  margin: 0 10px 0 0;
+}
+
+.tag-size-1 {
+  font-size: 17px;
+  color: #FF5733;
+}
+
+.tag-size-2 {
+  font-size: 19px;
+  color: #F4511E;
+}
+
+.tag-size-3 {
+  font-size: 21px;
+  color: #0D47A1;
+  font-family: "Open Sans", sans serif;
+  font-weight: 400;
+}
+
+.tag-size-4 {
+  font-size: 35px;
+  color: #006699;
+  font-weight: bold;
+  line-height: 1.0;
+}
+
+.tag-size-6 {
+  font-size: 25px;
+  color: #0066CC;
+  font-family: 'Oswald', sans-serif;
+  line-height: 1.7;
+}
 /*# sourceMappingURL=style.css.map */
