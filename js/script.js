@@ -157,10 +157,15 @@ const optCloudClassPrefix = 'tag-size-';
     const allTagsData = {tags: []};
     /* [NEW] START LOOP: for each tag in allTags: */
     for (let tag in allTags) {
+      allTagsData.tags.push({
+        tag: tag,
+        count: allTags[tag],
+        className: calculateTagClass(allTags[tag], tagsParams)
+      });
       /* [NEW] generate code of a link and add it to allTagsHTML */
       //allTagsHTML += tag + '(' + allTags[tag] + ')';
-      const tagLinkHTML = '<li class="tag-size-' + calculateTagClass(allTags[tag], tagsParams) + '">' + tag + '</li>';
-      console.log('tagLinkHTML:', tagLinkHTML);
+      //const tagLinkHTML = '<li class="tag-size-' + calculateTagClass(allTags[tag], tagsParams) + '">' + tag + '</li>';
+      //console.log('tagLinkHTML:', tagLinkHTML);
       /* [NEW] END LOOP: for each tag of allTags: */
     }
     /* [NEW] add HTML from allTagsHTML to tagList */
@@ -254,7 +259,7 @@ const optCloudClassPrefix = 'tag-size-';
     //const articleAuthorArray = articleAuthor.split('');
     //for (let articleAuthor of articleAuthorArray) {
       //tworzymy zmienną linkHTML do której zapisujemy nasz html <p class="post-author">by '+ articleAuthor +'</p>
-      const linkHTMLData = {author: author, author: author};
+      const linkHTMLData = {id: articleAuthor, author: articleAuthor};
       const linkHTML = templates.authorLink(linkHTMLData);
       //dodajemy do zmiennej html nasz linkHTML +=
       html = linkHTML + html;
